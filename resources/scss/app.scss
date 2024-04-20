@@ -1,0 +1,91 @@
+a.navlink {
+    @apply text-black; /* Applying Tailwind CSS class */
+
+    &::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 1.5px;
+        background: black; /* Reddish-pink color */
+        transition: width 0.2s; /* Transition effect for width */
+    }
+
+    &:hover::after {
+        width: 100%;
+    }
+}
+
+.a.light-gradient-link {
+    color: #f29492; /* Reddish-pink color */
+
+    &:hover::after {
+        width: 100%;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 1.5px;
+        background: #f29492; /* Reddish-pink color */
+        transition: width 0.2s; /* Transition effect for width */
+    }
+}
+
+a.navlink.contrast {
+    color: #f29492; /* Reddish-pink color */
+
+    &:hover::after {
+        width: 100%;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 1.5px;
+        background: #f29492; /* Reddish-pink color */
+        transition: width 0.2s; /* Transition effect for width */
+    }
+}
+
+// *:focus{
+//     outline: none;
+// }
+
+input {
+    &:focus {
+        outline: none;
+        border: 2px solid #114357;
+    }
+
+    .form {
+        color: yellow;
+    }
+}
+
+*.pink {
+    color: #f29492; /* Reddish-pink color */
+}
+
+*.pink-bg {
+    background-color: #f29492; /* Reddish-pink color */
+}
+
+*.dark-bg {
+    background-color: #114357; /* Dark blue color */
+}
+
+*.dark {
+    color: #114357; /* Dark blue color */
+}
+
+div.card {
+    box-shadow:
+        2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+        6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+        12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+        22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+        41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+        100px 100px 80px rgba(0, 0, 0, 0.07);
+}

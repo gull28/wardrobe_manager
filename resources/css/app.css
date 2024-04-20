@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-main{
+    display: flex;
+    height: 100vh;
+}
+
+h1{
+    font-size: 3rem;
+    color: red;
+}
