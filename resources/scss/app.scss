@@ -50,17 +50,29 @@ a.navlink.contrast {
 }
 
 // *:focus{
-//     outline: none;
+// outline: none;
 // }
 
-input {
+input,
+textarea {
     &:focus {
         outline: none;
         border: 2px solid #114357;
     }
+}
 
-    .form {
-        color: yellow;
+input[type=color]{
+    &:focus {
+        outline: none;
+        border: none;
+    }
+
+}
+
+input.pink-b {
+    &:focus {
+        outline: none;
+        border: 2px solid #f29492;
     }
 }
 

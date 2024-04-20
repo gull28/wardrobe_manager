@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Models\Clothing;
 
 class WardrobeController extends Controller
 {
     public function index()
     {
-        return view('wardrobe.index');
+        return view('wardrobe.index', [
+            'clothes' => Clothing::all()
+        ]);
     }
 
     public function create()
@@ -19,6 +23,7 @@ class WardrobeController extends Controller
     public function store()
     {
         // Validate the user
+        return var_dump(request()->all());
         $validated = request()->validate([
             'name' => 'required',
             'description' => 'required',

@@ -17,7 +17,7 @@ class FormInput extends Component
     public $type;
     public $value;
     public $placeholder;
-    
+
     public function __construct($name, $label, $type, $value = null, $placeholder = null)
     {
         $this->name = $name;
