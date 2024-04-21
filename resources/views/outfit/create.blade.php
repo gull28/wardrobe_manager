@@ -19,14 +19,6 @@
                         <x-form-input label="Wear count" name="Wear count " type="number" placeholder="how many times to wear before washing" />
                     </div>
                     <div class="flex p-5 flex-col">
-                        <div class="flex flex-row">
-                            <x-form-input label="Color" name="color" type="color" placeholder="Blue"
-                                class="p-0 m-0 rounded-full w-16 h-16 border-none bg-transparent" id='color' />
-                        </div>
-                        <x-form-dropdown label="Size" name="size" type="text" placeholder="M" class="pink-b">
-                            @foreach ($sizes as $size)
-                                <option>{{ $size }}</option>
-                            @endforeach
                         </x-form-dropdown>
                         <x-form-input label="Brand" name="brand" type="text" placeholder="Levi's" class="pink-b" />
                     </div>
@@ -35,14 +27,4 @@
                     item</button>
             </form>
         </div>
-        <script>
-            $("#color").change(function(event) {
-                console.log($(this).val());
-                $("#color_front").css('background-color', $(this).val());
-            });
-
-            $("#color_front").click(function(event) {
-                $("#color").click();
-            });
-        </script>
     @endsection

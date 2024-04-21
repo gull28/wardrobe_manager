@@ -13,7 +13,7 @@
                         <a href="/wardrobe" class="navlink text-black-900">Wardrobe</a>
                     </li>
                     <li class="px-5">
-                        <a href="/wardrobe" class="navlink text-black-900">Outfits</a>
+                        <a href="/outfits" class="navlink text-black-900">Outfits</a>
                     </li>
                     <li class="px-5">
                         <a href="/wardrobe" class="navlink text-black-900">Laundry cycles</a>

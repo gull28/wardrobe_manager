@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // create if not exists
         Schema::create('outfit', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WardrobeController;
+use App\Http\Controllers\OutfitController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,3 +20,4 @@ Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::resource('wardrobe', WardrobeController::class)->middleware('auth');
+Route::resource('outfits', OutfitController::class)->middleware('auth');

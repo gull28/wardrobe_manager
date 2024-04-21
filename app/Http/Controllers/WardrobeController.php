@@ -8,30 +8,59 @@ use App\Models\Clothing;
 
 class WardrobeController extends Controller
 {
+
+    public $clothingTypes = [
+        'shirt' => 'Shirt',
+        'pants' => 'Pants',
+        'shoes' => 'Shoes',
+        'accessory' => 'Accessory',
+        'other' => 'Other'
+    ];
+
+    public $sizes = [
+        'xs' => 'XS',
+        's' => 'S',
+        'm' => 'M',
+        'l' => 'L',
+        'xl' => 'XL',
+        'xxl' => 'XXL'
+    ];
+
     public function index()
     {
+
+        $clothes = Clothing::where('user_id', auth()->id())->get();
+
         return view('wardrobe.index', [
-            'clothes' => Clothing::all()
+            'clothes' => $clothes
         ]);
     }
 
     public function create()
     {
-        return view('wardrobe.create');
+        return view('wardrobe.create', [
+            'clothingTypes' => $this->clothingTypes,
+            'sizes' => $this->sizes
+        ]);
     }
 
     public function store()
     {
         // Validate the user
-        return var_dump(request()->all());
         $validated = request()->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required'
+            'color' => 'required',
+            'size' => 'required',
+            'category' => 'required',
+            'brand' => 'required',
         ]);
 
+        $user_id = auth()->id();
+        $validated['user_id'] = $user_id;
+    
         // Create and save the user
-        $wardrobe = Wardrobe::create($validated);
+        $wardrobe = Clothing::create($validated);
 
         // Redirect to the home page
         return redirect("/wardrobe");

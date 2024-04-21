@@ -42,8 +42,14 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // cascade delete
+        Schema::table('outfits', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
+
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+
     }
 };
