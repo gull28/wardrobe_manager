@@ -3,6 +3,7 @@
     <select type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
         {{ $attributes->merge(['class' => 'form p-2 rounded mt-1 w-96 text-m']) }} autocomplete="off"
         placeholder="{{ $placeholder }}">
+        <option value="none">None</option>
         {{ $slot }}
     </select>
     @error($name)

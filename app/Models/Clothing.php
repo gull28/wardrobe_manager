@@ -11,6 +11,11 @@ class Clothing extends Model
 
     protected $fillable = ['name', 'category', 'description', 'size', 'color', 'user_id', 'wear_count'];
 
+    public function outfits()
+    {
+        return $this->belongsToMany(Outfit::class, 'outfit_clothing', 'clothing_id', 'outfit_id')->withPivot('type');
+    }
+
     protected function casts(): array
     {
         return [

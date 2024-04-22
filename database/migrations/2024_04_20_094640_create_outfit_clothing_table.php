@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('outfit_id')->constrained();
             $table->foreignId('clothing_id')->constrained();
+            $table->string('category');
         });
     }
 
