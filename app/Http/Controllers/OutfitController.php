@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Outfit;
 use App\Models\Clothing;
+use App\Transformers\OutfitTransformer;
 
 class OutfitController extends Controller
 {
@@ -16,12 +17,12 @@ class OutfitController extends Controller
         'other' => 'Other',
     ];
 
-    // WIP
     public function index()
     {
-        $outfits = Outfit::where('user_id', auth()->id())->get();
-
-        return view('outfit.index', ['outfits' => $outfits]);
+        $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
+        $transformedOutfits = OutfitTransformer::transform($outfits);
+    
+        return view('outfit.index', ['outfits' => $transformedOutfits, 'clothingTypes' => $this->clothingTypes]);
     }
 
     public function create()
@@ -73,11 +74,9 @@ class OutfitController extends Controller
         return redirect(route('outfits.index'));
     }
 
-
     public function show($id)
     {
         $outfit = Outfit::findOrFail($id);
-        // $clothes = $outfit->clothes;
 
         return view('outfit.index', ['outfit' => $outfit]);
     }

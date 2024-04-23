@@ -29,8 +29,6 @@
                         @endforeach
                     </div>
                 </div>
-                <button type="submit" class="ml-5 dark-bg w-fit pink text-white font-bold py-2 px-3 rounded">Add
-                    item</button>
             </form>
         </div>
     @endsection
