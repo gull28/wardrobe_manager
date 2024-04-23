@@ -13,7 +13,7 @@ class Clothing extends Model
 
     public function outfits()
     {
-        return $this->belongsToMany(Outfit::class, 'outfit_clothing', 'clothing_id', 'outfit_id')->withPivot('type');
+        return $this->belongsToMany(Outfit::class, 'outfit_clothing', 'clothing_id', 'outfit_id')->withPivot('category');
     }
 
     protected function casts(): array

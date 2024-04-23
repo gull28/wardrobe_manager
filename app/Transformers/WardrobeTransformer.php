@@ -2,16 +2,16 @@
 
 namespace App\Transformers;
 
-class OutfitTransformer
+class WardrobeTransformer
 {
-    public static function transform($outfits)
+    public static function transform($wardrobe)
     {
-        return $outfits->map(function ($outfit) {
+        return $wardrobe->map(function ($c) {
             return [
-                'name' => $outfit->name,
-                'id' => $outfit->id,
+                'name' => $c->name,
+                'id' => $c->id,
                 'desc' => $outfit->description,
-                'clothes' => $outfit->clothing
+                'clothes' => $c->clothing
                     ->mapWithKeys(function ($clothing) {
                         return [$clothing->pivot->category => [
                             'name' => $clothing->name,

@@ -59,10 +59,8 @@ class WardrobeController extends Controller
         $user_id = auth()->id();
         $validated['user_id'] = $user_id;
     
-        // Create and save the user
         $wardrobe = Clothing::create($validated);
 
-        // Redirect to the home page
         return redirect("/wardrobe");
     }
 
@@ -76,9 +74,13 @@ class WardrobeController extends Controller
 
     public function edit($id)
     {
-        $wardrobe = Wardrobe::find($id);
+        $item = Clothing::find($id);
 
-        return view('wardrobe.edit', compact('wardrobe'));
+        return view('wardrobe.edit', [
+            'item' => $item,
+            'clothingTypes' => $this->clothingTypes,
+            'sizes' => $this->sizes
+        ]);
     }
 
     public function update($id)
@@ -87,11 +89,14 @@ class WardrobeController extends Controller
         $validated = request()->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required'
+            'color' => 'required',
+            'size' => 'required',
+            'category' => 'required',
+            'brand' => 'required',
         ]);
 
         // Create and save the user
-        $wardrobe = Wardrobe::find($id);
+        $wardrobe = Clothing::find($id);
         $wardrobe->update($validated);
 
         // Redirect to the home page
@@ -100,7 +105,7 @@ class WardrobeController extends Controller
 
     public function destroy($id)
     {
-        $wardrobe = Wardrobe::find($id);
+        $wardrobe = Clothing::find($id);
         $wardrobe->delete();
 
         return redirect("/wardrobe");
