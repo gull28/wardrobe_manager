@@ -85,7 +85,6 @@ class WardrobeController extends Controller
 
     public function update($id)
     {
-        // Validate the user
         $validated = request()->validate([
             'name' => 'required',
             'description' => 'required',
@@ -95,11 +94,9 @@ class WardrobeController extends Controller
             'brand' => 'required',
         ]);
 
-        // Create and save the user
         $wardrobe = Clothing::find($id);
         $wardrobe->update($validated);
 
-        // Redirect to the home page
         return redirect("/wardrobe");
     }
 

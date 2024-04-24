@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-row justify-center align-center w-full">
-        @if (empty($outfits))
+        @if (!$outfits)
             {{-- <x-card title="No items found">
                 <p class="text-lg text-white w-96 text-wrap">Add some clothes to your wardrobe, so you can plan your outfits better.</p>
                 <a href="/outfits/create" class="py-2 px-4 pink-bg dark font-bold w-fit border-2 border-gray-500 mt-5 rounded">Add clothes</a>

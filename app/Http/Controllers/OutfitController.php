@@ -21,7 +21,7 @@ class OutfitController extends Controller
     {
         $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
         $transformedOutfits = OutfitTransformer::transform($outfits);
-    
+
         return view('outfit.index', ['outfits' => $transformedOutfits, 'clothingTypes' => $this->clothingTypes]);
     }
 
@@ -83,7 +83,50 @@ class OutfitController extends Controller
 
     public function edit($id)
     {
+        $outfit = Outfit::findOrFail($id)->load('clothing');
+        $transformedOutfit = OutfitTransformer::transformOne($outfit);
+
+        $clothes = Clothing::where('user_id', auth()->id())->get();
+        $clothesByCategory = $clothes->groupBy('category');
+
+        return view('outfit.edit', ['outfit' => $transformedOutfit, 'clothingTypes' => $this->clothingTypes, 'clothesByCategory' => $clothesByCategory]);
+    }
+
+    public function update($id)
+    {
+        $validated = request()->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'Shirt' => 'required',
+            'Pants' => 'required',
+            'Shoes' => 'required',
+            'Accessory' => 'required',
+            'Other' => 'required',
+        ]);
+
         $outfit = Outfit::findOrFail($id);
-        return view('outfit.edit', ['outfit' => $outfit]);
+
+        $outfit->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+        ]);
+
+        $clothes = [
+            'Shirt' => $validated['Shirt'],
+            'Pants' => $validated['Pants'],
+            'Shoes' => $validated['Shoes'],
+            'Accessory' => $validated['Accessory'],
+            'Other' => $validated['Other'],
+        ];
+
+        $outfit->clothing()->detach();
+
+        foreach ($clothes as $type => $clothing_id) {
+            if ($clothing_id !== 'none') {
+                $outfit->clothing()->attach($clothing_id, ['category' => $type]);
+            }
+        }
+
+        return redirect(route('outfits.index'));
     }
 }
