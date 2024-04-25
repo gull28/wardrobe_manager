@@ -92,6 +92,7 @@ class WardrobeController extends Controller
             'size' => 'required',
             'category' => 'required',
             'brand' => 'required',
+            'wear_count' => 'required',
         ]);
 
         $wardrobe = Clothing::find($id);

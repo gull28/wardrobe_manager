@@ -9,7 +9,7 @@ class Clothing extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category', 'description', 'size', 'color', 'user_id', 'wear_count'];
+    protected $fillable = ['name', 'category', 'description', 'size', 'color', 'brand', 'user_id', 'wear_count'];
 
     public function outfits()
     {
