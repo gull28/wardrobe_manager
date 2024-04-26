@@ -12,13 +12,11 @@ class ScheduleController extends Controller
 {
     public function showDay($date)
     {
-        $clothes = Clothing::where('user_id', auth()->id())->get();
-        $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->with('outfit.clothing')->get();
         $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->with('outfit.clothing')->get();
         $wearables = Outfit::getWearableIds();
 
-        return view('schedule.day',[
+        return view('schedule.day', [
             'day' => $date,
             'clothes' => $clothes,
             'wearables' => $wearables,
@@ -38,10 +36,17 @@ class ScheduleController extends Controller
 
     public function wash($date)
     {
-        $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
-        $wearables = Outfit::getWearableIds();
+        $clothes = Clothing::where('user_id', auth()->id())->get();
 
-        return view('schedule.wash', ['date' => $date]);
+        $isEditable = $date >= date('Y-m-d');
+
+        $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->get();
+
+        $clothes = $clothes->reject(function ($clothing) use ($wearSchedule) {
+            return $wearSchedule->contains('clothing_id', $clothing->id);
+        });
+
+        return view('schedule.wash', ['date' => $date, 'clothes' => $clothes]);
     }
 
     public function storeWear($date)
