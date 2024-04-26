@@ -19,9 +19,9 @@
                         <p class="text-lg text-white">Uses left: {{ $c->uses_left }}</p>
                         <div class="flex flex-row justify-between">
                             <button id="delete_clothing" data-id="{{ $c->id }}"
-                                class="pink-bg w-fit dark mt-5 text-white font-bold py-2 px-3 rounded">Delete</button>
+                                class="pink-bg w-fit dark mt-5 text-white font-bold py-2 px-3 rounded mx-2">Delete</button>
                             <button id="wash_clothing" data-id="{{ $c->id }}"
-                                class="pink-bg w-fit dark mt-5 text-white font-bold py-2 px-3 rounded">Wash</button>
+                                class="pink-bg w-fit dark mt-5 text-white font-bold py-2 px-3 rounded mx-2">Wash</button>
                         </div>
                     </x-card>
                 @endforeach
