@@ -54,6 +54,7 @@ class WardrobeController extends Controller
             'size' => 'required',
             'category' => 'required',
             'brand' => 'required',
+            'wear_count' => 'required',
         ]);
 
         $user_id = auth()->id();
@@ -61,7 +62,7 @@ class WardrobeController extends Controller
     
         $wardrobe = Clothing::create($validated);
 
-        return redirect("/wardrobe");
+        return redirect(route('wardrobe.index'));
     }
 
     public function show($id)
@@ -103,11 +104,22 @@ class WardrobeController extends Controller
 
     public function destroy($id)
     {
-        $wardrobe = Clothing::find($id);
-        $wardrobe->delete();
+        $clothing = Clothing::findOrfail($id);
 
-        return redirect("/wardrobe");
+        // delete all the relationships
+        $clothing->outfits()->detach();
+
+        $clothing->delete();
+
+        return redirect(route('wardrobe.index'));
     }
 
+    public function wash($id)
+    {
+        $clothing = Clothing::find($id);
+        $clothing->uses_left = $clothing->wear_count;
+        $clothing->save();
 
+        return redirect(route('wardrobe.index'));
+    }
 }

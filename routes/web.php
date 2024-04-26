@@ -20,4 +20,6 @@ Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::resource('wardrobe', WardrobeController::class)->middleware('auth');
+Route::post('/wardrobe/{clothing}/wash', [WardrobeController::class, 'wash'])->name('wardrobe.wash')->middleware('auth');
+
 Route::resource('outfits', OutfitController::class)->middleware('auth');
