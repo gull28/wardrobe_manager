@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WardrobeController;
 use App\Http\Controllers\OutfitController;
+use App\Http\Controllers\ScheduleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,3 +24,10 @@ Route::resource('wardrobe', WardrobeController::class)->middleware('auth');
 Route::post('/wardrobe/{clothing}/wash', [WardrobeController::class, 'wash'])->name('wardrobe.wash')->middleware('auth');
 
 Route::resource('outfits', OutfitController::class)->middleware('auth');
+
+// routes for day schedule
+Route::get('/schedule/{day}', [ScheduleController::class, 'showDay'])->name('schedule.day')->middleware('auth');
+Route::get('/schedule/{day}/wear', [ScheduleController::class, 'wear'])->name('schedule.wear')->middleware('auth');
+Route::get('/schedule/{day}/wash', [ScheduleController::class, 'wash'])->name('schedule.wash')->middleware('auth');
+Route::post('/schedule/{day}/wear', [ScheduleController::class, 'storeWear'])->middleware('auth');
+Route::post('/schedule/{day}/wash', [ScheduleController::class, 'storeWash'])->middleware('auth');

@@ -23,6 +23,14 @@
             border: 1px solid black;
         }
 
+        #calendar td[data-date]:hover {
+            background-color: #f29492;
+            color: white;
+            cursor: pointer;
+        }
+
+        #calendar td {}
+
         tr {
             display: flex;
             border-collapse: collapse;
@@ -66,7 +74,6 @@
             var tbody = table.querySelector("tbody");
             table.querySelector("thead tr").innerHTML = '';
 
-            // Create header row
             moment.weekdaysShort().forEach(function(day) {
                 var th = document.createElement("th");
                 th.textContent = day;
@@ -81,17 +88,25 @@
                 var cell = row.insertCell();
                 if (i >= startingDayOfWeek) {
                     cell.textContent = dayCounter;
+                    // add event listener to cell
+                    cell.addEventListener('click', handleCellClick);
+                    cell.setAttribute('data-date', `${year}-${month + 1}-${dayCounter}`);
                     dayCounter++;
+
                 }
             }
 
             for (var i = 1; i < 6; i++) {
                 var newRow = tbody.insertRow();
-                var rowHasContent = false; 
+                var rowHasContent = false;
+
                 for (var j = 0; j < 7; j++) {
                     var cell = newRow.insertCell();
                     if (dayCounter <= daysInMonth) {
                         cell.textContent = dayCounter;
+                        // add event listener to cell
+                        cell.addEventListener('click', handleCellClick);
+                        cell.setAttribute('data-date', `${year}-${month + 1}-${dayCounter}`);
                         dayCounter++;
                         rowHasContent = true;
                     }
@@ -100,10 +115,8 @@
                     newRow.style.display = 'none';
                 }
             }
-
             document.getElementById("month-year").textContent = today.format('MMMM YYYY');
         }
-
 
         function prevMonth() {
             today = today.subtract(1, 'month');
@@ -113,6 +126,11 @@
         function nextMonth() {
             today = today.add(1, 'month');
             generateCalendar(today);
+        }
+
+        function handleCellClick(event) {
+            // go to /schedule/{day}
+            window.location.href = `/schedule/${event.target.getAttribute('data-date')}`;    
         }
 
         generateCalendar(moment());
