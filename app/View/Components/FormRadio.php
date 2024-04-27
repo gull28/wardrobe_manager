@@ -13,13 +13,15 @@ class FormRadio extends Component
     public $type;
     public $value;
     public $placeholder;
+    public $disabled;
 
-    public function __construct($name, $label, $type, $value = null, $placeholder = null)
+    public function __construct($name, $label, $type, $value = null, $placeholder = null, $disabled = '')
     {
         $this->name = $name;
         $this->label = $label;
         $this->type = $type;
         $this->value = $value;
+        $this->disabled = $disabled;
         $this->placeholder = $placeholder;
     }
 
