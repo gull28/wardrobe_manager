@@ -35,7 +35,8 @@ class WearSchedule extends Model
             $wearCount = $clothing->wear_count;
             $washCount = WashSchedule::where('clothing_id', $clothingId)->where('date', '>', now())->orderBy('date', 'asc')->get();
 
-            $schedule = $wearSchedule->merge($washSchedule)->push(['date' => $date])->sortBy('date');
+            $date = date('Y-m-d', strtotime($date));
+            $schedule = $wearSchedule->merge($washSchedule)->push(['date' => $date ])->sortBy('date');
 
             foreach($schedule as $s){
                 if($s->clothing_id == $clothingId){
@@ -54,7 +55,6 @@ class WearSchedule extends Model
             }
         }
         return $canWear;
-
     }
     // public function canAddToWearSchedule($outfitId){
     //     $outfit = Outfit::find($outfitId)->with('clothing')->get();
