@@ -34,13 +34,10 @@ class ScheduleController extends Controller
 
     public function wash($day)
     {
+
         $clothes = Clothing::where('user_id', auth()->id())->get();
 
         $isEditable = $day >= date('Y-m-d');
-
-        if (!$isEditable) {
-            return redirect()->route('schedule.day', ['day' => $day]);
-        }
 
         $date = date('Y-m-d', strtotime($day));
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->get();
@@ -49,7 +46,7 @@ class ScheduleController extends Controller
             return $wearSchedule->contains('clothing_id', $clothing->id);
         });
 
-        return view('schedule.wash', ['day' => $day, 'clothes' => $clothes]);
+        return view('schedule.wash', ['day' => $day, 'clothes' => $clothes, 'isEditable' => $isEditable]);
     }
 
     public function storeWear($date)
@@ -58,11 +55,26 @@ class ScheduleController extends Controller
             'outfit' => 'required',
         ]);
 
+        $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->get();
+
         $isValid = in_array($validated['outfit'], Outfit::getWearableIds());
+
+        $canAdd = WearSchedule::canAddToWearSchedule((int)$validated['outfit'], $date);
+
+        if (!$isValid || !$canAdd) {
+            return redirect()->route('schedule.wear', ['day' => $date]);
+        }
 
         $user_id = auth()->id();
 
         $date = date('Y-m-d', strtotime($date));
+
+        if($wearSchedule->count() > 0){
+            $wearSchedule->each(function($schedule){
+                $schedule->delete();
+            });
+        }
+
         WearSchedule::create([
             'date' => $date,
             'user_id' => $user_id,
@@ -74,11 +86,26 @@ class ScheduleController extends Controller
 
     public function storeWash($date)
     {
+
         $validated = request()->validate([
-            'outfit' => 'required',
+            'clothes' => 'required',
         ]);
 
         $user_id = auth()->id();
+
+        $date = date('Y-m-d', strtotime($date));
+        // validate each clothing in from the request
+        foreach ($validated['clothes'] as $clothing_id) {
+            $canWash = WashSchedule::canAddToWashSchedule($clothing_id, $date);
+            if ($canWash) {
+                WashSchedule::create([
+                    'date' => $date,
+                    'user_id' => $user_id,
+                    'clothing_id' => $clothing_id,
+                ]);
+            }
+        }
+
 
         WashSchedule::create([
             'date' => $date,
