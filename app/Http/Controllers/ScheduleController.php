@@ -13,8 +13,8 @@ class ScheduleController extends Controller
     public function showDay($date)
     {
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->with('outfit.clothing')->get();
-        $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->with('outfit.clothing')->get();
-        $wearables = Outfit::getWearableIds();
+        $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->get();
+    $wearables = Outfit::getWearableIds();
 
         return view('schedule.day', [
             'day' => $date,
@@ -63,7 +63,7 @@ class ScheduleController extends Controller
             'outfit_id' => $validated['outfit'],
         ]);
 
-        return redirect()->route('schedule.day', ['date' => $date]);
+        return redirect()->route('schedule.day', ['day' => $date]);
     }
 
     public function storeWash($date)

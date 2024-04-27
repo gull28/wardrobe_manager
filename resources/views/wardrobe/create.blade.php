@@ -16,7 +16,7 @@
                                 <option>{{ $type }}</option>
                             @endforeach
                         </x-form-dropdown>
-                        <x-form-input label="Wear count" name="Wear count " type="number" placeholder="how many times to wear before washing" />
+                        <x-form-input label="Wear count" name="wear_count" type="number" placeholder="how many times to wear before washing" />
                     </div>
                     <div class="flex p-5 flex-col">
                         <div class="flex flex-row">

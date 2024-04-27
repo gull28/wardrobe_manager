@@ -8,6 +8,7 @@ use App\Models\Clothing;
 
 class Outfit extends Model
 {
+    protected $table = 'outfit';
     use HasFactory;
     protected $fillable = ['name', 'description', 'user_id'];
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('outfit_clothing', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('outfit_id')->constrained();
+            $table->foreignId('outfit_id')->constrained('outfit');
             $table->foreignId('clothing_id')->constrained();
             $table->string('category');
         });

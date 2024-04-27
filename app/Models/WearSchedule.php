@@ -15,6 +15,9 @@ class WearSchedule extends Model
 
     protected $fillable = ['date', 'user_id', 'outfit_id'];
 
+    public function outfit(){
+        return $this->belongsTo(Outfit::class);
+    }
     // public function canAddToWearSchedule($outfitId){
     //     $outfit = Outfit::find($outfitId)->with('clothing')->get();
     //     // get wear schedule for the outfit in the future

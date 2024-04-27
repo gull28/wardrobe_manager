@@ -43,7 +43,7 @@ return new class extends Migration
     public function down(): void
     {
         // cascade delete
-        Schema::table('outfits', function (Blueprint $table) {
+        Schema::table('outfit', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
 
