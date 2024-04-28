@@ -6,10 +6,9 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WardrobeController;
 use App\Http\Controllers\OutfitController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\HomePageController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomePageController::class, 'index'])->name('home');
 
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');

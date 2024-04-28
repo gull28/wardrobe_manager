@@ -21,9 +21,11 @@ class WashSchedule extends Model
             $query->where('clothing_id', $clothingId);
         })->get();
 
-        $wearSchedule = WearSchedule::whereIn('outfit_id', $outfits->pluck('id'))->where('date', '>', now())->orderBy('date', 'asc')->get();
+        $wearSchedule = WearSchedule::whereIn('outfit_id', $outfits->pluck('id'))->where('date', '=', today())->orderBy('date', 'asc')->get();
 
+        return var_dump($wearSchedule);
         if ($wearSchedule->count() > 0) {
+
             return false;
         }
 

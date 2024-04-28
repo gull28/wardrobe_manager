@@ -44,11 +44,17 @@ class WearSchedule extends Model
             }
 
             $date = date('Y-m-d', strtotime($date));
-            $schedule = $wearSchedule
-                ->merge($washSchedule)
-                ->push(['date' => $date, 'type' => 'wear'])
-                ->sortBy('date');
 
+            $schedule = collect();
+            foreach ($wearSchedule as $ws) {
+                $schedule->push(['date' => $ws['date'], 'type' => 'wear']);
+            }
+
+            foreach ($washSchedule as $ws) {
+                $schedule->push(['date' => $ws['date'], 'type' => 'wash']);
+            }
+            $schedule->push(['date' => $date, 'type' => 'wear']);
+            $schedule = collect($schedule)->sortBy('date');
 
             foreach ($schedule as $s) {
                 if ($s['type'] == 'wear') {

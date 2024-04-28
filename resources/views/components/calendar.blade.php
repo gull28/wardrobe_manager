@@ -60,7 +60,6 @@
 
     <script>
         let today = moment();
-
         console.log(@json($val))
 
         function generateCalendar() {
