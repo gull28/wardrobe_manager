@@ -40,8 +40,8 @@ class OutfitController extends Controller
     public function store()
     {
         $validated = request()->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
             'Shirt' => 'required',
             'Pants' => 'required',
             'Shoes' => 'required',
@@ -95,8 +95,8 @@ class OutfitController extends Controller
     public function update($id)
     {
         $validated = request()->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
             'Shirt' => 'required',
             'Pants' => 'required',
             'Shoes' => 'required',

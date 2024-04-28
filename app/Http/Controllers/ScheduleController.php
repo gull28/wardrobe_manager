@@ -17,11 +17,14 @@ class ScheduleController extends Controller
         $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->get();
         $wearables = Outfit::getWearableIds();
 
+        $isEditable = date('Y-m-d', strtotime($date)) >= date('Y-m-d');
+
         return view('schedule.day', [
             'day' => $date,
             'wearables' => $wearables,
             'wearSchedule' => $wearSchedule,
             'washSchedule' => $washSchedule,
+            'isEditable' => $isEditable
         ]);
     }
 
@@ -35,7 +38,7 @@ class ScheduleController extends Controller
         $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
         $wearables = Outfit::getWearableIds();
 
-        return view('schedule.wash', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables]);
+        return view('schedule.wear', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables]);
     }
 
     public function wash($day)

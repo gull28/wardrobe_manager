@@ -46,15 +46,14 @@ class WardrobeController extends Controller
 
     public function store()
     {
-        // Validate the user
         $validated = request()->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'color' => 'required',
-            'size' => 'required',
-            'category' => 'required',
-            'brand' => 'required',
-            'wear_count' => 'required',
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
+            'color' => 'required|max:255',
+            'size' => 'required|in:XS,S,M,L,XL,XXL',
+            'category' => 'required|max:255',
+            'brand' => 'required|max:255',
+            'wear_count' => 'required|numeric|min:0|max:1000',
         ]);
 
         $user_id = auth()->id();
