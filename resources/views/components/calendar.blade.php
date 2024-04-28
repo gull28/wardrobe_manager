@@ -66,6 +66,7 @@
         function generateCalendar() {
             var month = today.month();
             var year = today.year();
+            var day = today.date();
             var daysInMonth = today.daysInMonth();
             var firstDayOfMonth = moment(today).startOf('month');
             var startingDayOfWeek = firstDayOfMonth.day();
@@ -88,6 +89,12 @@
                 var cell = row.insertCell();
                 if (i >= startingDayOfWeek) {
                     cell.textContent = dayCounter;
+
+                    // if the day is today, highlight it
+                    if (dayCounter === day) {
+                        cell.style.backgroundColor = '#f29492';
+                        cell.style.color = 'white';
+                    }
                     // add event listener to cell
                     cell.addEventListener('click', handleCellClick);
                     cell.setAttribute('data-date', `${year}-${month + 1}-${dayCounter}`);
@@ -105,6 +112,12 @@
                     if (dayCounter <= daysInMonth) {
                         cell.textContent = dayCounter;
                         // add event listener to cell
+                        // if the day is today, highlight it
+                        if (dayCounter === day) {
+                            cell.style.backgroundColor = '#f29492';
+                            cell.style.color = 'white';
+                        }
+
                         cell.addEventListener('click', handleCellClick);
                         cell.setAttribute('data-date', `${year}-${month + 1}-${dayCounter}`);
                         dayCounter++;
@@ -130,7 +143,7 @@
 
         function handleCellClick(event) {
             // go to /schedule/{day}
-            window.location.href = `/schedule/${event.target.getAttribute('data-date')}`;    
+            window.location.href = `/schedule/${event.target.getAttribute('data-date')}`;
         }
 
         generateCalendar(moment());

@@ -12,6 +12,7 @@ class ScheduleController extends Controller
 {
     public function showDay($date)
     {
+        
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->with('outfit.clothing')->get();
         $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->get();
         $wearables = Outfit::getWearableIds();
@@ -26,20 +27,28 @@ class ScheduleController extends Controller
 
     public function wear($day)
     {
+        $date = date('Y-m-d', strtotime($day));
+        if($date < date('Y-m-d')){
+            return redirect()->route('schedule.day', ['day' => $day]);
+        }
+
         $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
         $wearables = Outfit::getWearableIds();
 
-        return view('schedule.wear', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables]);
+        return view('schedule.wash', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables]);
     }
 
     public function wash($day)
     {
+        $date = date('Y-m-d', strtotime($day));
+        if($date < date('Y-m-d')){
+            return redirect()->route('schedule.day', ['day' => $day]);
+        }
 
         $clothes = Clothing::where('user_id', auth()->id())->get();
 
         $isEditable = $day >= date('Y-m-d');
 
-        $date = date('Y-m-d', strtotime($day));
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->get();
 
         $clothes = $clothes->reject(function ($clothing) use ($wearSchedule) {
@@ -51,6 +60,7 @@ class ScheduleController extends Controller
 
     public function storeWear($date)
     {
+        
         $validated = request()->validate([
             'outfit' => 'required',
         ]);
@@ -97,7 +107,9 @@ class ScheduleController extends Controller
         // validate each clothing in from the request
         foreach ($validated['clothes'] as $clothing_id) {
             $canWash = WashSchedule::canAddToWashSchedule($clothing_id, $date);
+            return var_dump($canWash);
             if ($canWash) {
+
                 WashSchedule::create([
                     'date' => $date,
                     'user_id' => $user_id,
@@ -106,13 +118,6 @@ class ScheduleController extends Controller
             }
         }
 
-
-        WashSchedule::create([
-            'date' => $date,
-            'user_id' => $user_id,
-            'outfit_id' => $validated['outfit'],
-        ]);
-
-        return redirect()->route('schedule.day', ['date' => $date]);
+        return redirect()->route('schedule.day', ['day' => $date]);
     }
 }
