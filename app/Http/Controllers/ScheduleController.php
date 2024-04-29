@@ -35,10 +35,17 @@ class ScheduleController extends Controller
             return redirect()->route('schedule.day', ['day' => $day]);
         }
 
+        $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->first();
+        
+        $outfitId = null;
+        if(!empty($wearSchedule)){
+            $outfitId = $wearSchedule->outfit_id;
+        }
+
         $outfits = Outfit::where('user_id', auth()->id())->with('clothing')->get();
         $wearables = Outfit::getWearableIds();
 
-        return view('schedule.wear', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables]);
+        return view('schedule.wear', ['day' => $day, 'outfits' => $outfits, 'wearables' => $wearables, 'outfitId' => $outfitId]);
     }
 
     public function wash($day)
@@ -50,15 +57,20 @@ class ScheduleController extends Controller
 
         $clothes = Clothing::where('user_id', auth()->id())->get();
 
+
         $isEditable = $day >= date('Y-m-d');
 
         $wearSchedule = WearSchedule::where('date', $date)->where('user_id', auth()->id())->get();
+
+        $washSchedule = WashSchedule::where('date', $date)->where('user_id', auth()->id())->get();
+        $clothingIds = $washSchedule->pluck('clothing_id')->toArray();
+
 
         $clothes = $clothes->reject(function ($clothing) use ($wearSchedule) {
             return $wearSchedule->contains('clothing_id', $clothing->id);
         });
 
-        return view('schedule.wash', ['day' => $day, 'clothes' => $clothes, 'isEditable' => $isEditable]);
+        return view('schedule.wash', ['day' => $day, 'clothes' => $clothes, 'isEditable' => $isEditable, 'selectedClothings' => $clothingIds]);
     }
 
     public function storeWear($date)
@@ -110,7 +122,7 @@ class ScheduleController extends Controller
         // validate each clothing in from the request
         foreach ($validated['clothes'] as $clothing_id) {
             $canWash = WashSchedule::canAddToWashSchedule($clothing_id, $date);
-            
+
             if ($canWash) {
                 WashSchedule::create([
                     'date' => $date,

@@ -8,7 +8,7 @@
                 <div class="flex flex-grow flex-col px-10">
                     @foreach ($outfits as $outfit)
                         <x-form-radio disabled="{{ !in_array($outfit['id'], $wearables) ? 'disabled' : '' }}"
-                            label="{{ $outfit['name'] }}" value="{{$outfit['id']}}" name="outfit" type="radio" />
+                            label="{{ $outfit['name'] }}" checked="{{$outfitId === $outfit['id'] ? 'checked' : ''}}" value="{{$outfit['id']}}" name="outfit" type="radio" />
                     @endforeach
                 </div>
                 <button type="submit" class="pink-bg w-fit dark mt-10 text-white font-bold py-2 px-3 rounded">Wear

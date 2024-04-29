@@ -84,7 +84,6 @@
         }
 
         // try not to cringe
-
         @php
             $wearIcon = @svg('maki-clothing-store');
             $washIcon = @svg('iconpark-washingmachine');
@@ -102,6 +101,7 @@
 
         let today = moment();
         let schedule = JSON.parse(htmlDecode(@json($schedule)));
+        console.log("og", [schedule]);
 
         function generateCalendar() {
             var month = today.month();
@@ -131,6 +131,7 @@
                     cell.textContent = dayCounter;
 
                     const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
+                    console.log(schedule);
                     const daySchedule = schedule.filter(s => {
                         return s.date === date;
                     });
@@ -181,6 +182,7 @@
                     if (dayCounter <= daysInMonth) {
                         const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
 
+                        console.log(schedule);
                         const daySchedule = schedule.filter(s => {
                             return s.date === date;
                         });

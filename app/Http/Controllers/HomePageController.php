@@ -34,8 +34,6 @@ class HomePageController extends Controller
             $schedule->push(['date' => $date, 'type' => 'wash']);
         }
 
-        $schedule = collect($schedule)->sortBy('date');
-
         return view('welcome', [
             'schedule' => $schedule,
         ]);

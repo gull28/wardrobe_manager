@@ -7,7 +7,7 @@
                 @csrf
                 <div class="flex flex-grow flex-col px-10">
                     @foreach ($clothes as $c)
-                        <x-form-radio label="{{ $c['name'] }}" value="{{ $c['id'] }}" name="clothes[]" type="checkbox" />
+                        <x-form-radio checked="{{ in_array($c['id'], $selectedClothings) }}" label="{{ $c['name'] }}" value="{{ $c['id'] }}" name="clothes[]" type="checkbox" />
                     @endforeach
                 </div>
                 <button type="submit" class="pink-bg w-fit dark mt-10 text-white font-bold py-2 px-3 rounded">Wash

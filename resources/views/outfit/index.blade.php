@@ -15,11 +15,15 @@
                 </div>
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($outfits as $outfit)
-                    <x-card :title="$outfit['name']" :to="route('outfits.edit', ['outfit' => $outfit['id']])" class="pink-bg">
-                        @foreach ($clothingTypes as $type)
+                        <x-card :title="$outfit['name']" :to="route('outfits.edit', ['outfit' => $outfit['id']])" class="pink-bg">
+                            @foreach ($clothingTypes as $type)
                                 <div class="flex flex-row my-1">
                                     <p class="text-lg text-white">{{ $type }}: </p>
-                                    <p class="text-lg text-white">{{ $outfit->clothes[$type]['name'] ?? 'None' }}</p>
+                                    <p class="text-lg text-white mx-3">{{ $outfit['clothes'][$type]['name'] ?? 'None' }}</p>
+                                    @if (isset($outfit['clothes'][$type]['color']) && $outfit['clothes'][$type]['color'])
+                                        <div class="w-5 h-5 rounded-full mt-1"
+                                            style="background-color: {{ $outfit['clothes'][$type]['color'] }}"></div>
+                                    @endif
                                 </div>
                             @endforeach
                         </x-card>
@@ -28,4 +32,5 @@
             </div>
         @endif
     </div>
+
 @endsection

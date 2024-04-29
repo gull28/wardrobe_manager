@@ -14,8 +14,9 @@ class FormRadio extends Component
     public $value;
     public $placeholder;
     public $disabled;
+    public $checked;
 
-    public function __construct($name, $label, $type, $value = null, $placeholder = null, $disabled = '')
+    public function __construct($name, $label, $type, $value = null, $placeholder = null, $disabled = '', $checked = false)
     {
         $this->name = $name;
         $this->label = $label;
@@ -23,6 +24,7 @@ class FormRadio extends Component
         $this->value = $value;
         $this->disabled = $disabled;
         $this->placeholder = $placeholder;
+        $this->checked = $checked;
     }
 
     /**

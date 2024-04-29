@@ -11,12 +11,17 @@
             <div class="grid grid-cols-3 gap-4">
                 @foreach ($clothes as $c)
                     <x-card title="{{ $c->name }}" :to="route('wardrobe.edit', ['wardrobe' => $c->id])" class="pink-bg">
+                        <div class="flex flex-row">
+                            <p class="text-lg text-white mr-5">Color: </p>
+                            <div class="w-5 h-5 rounded-full mt-1" style="background-color: {{ $c->color }}"></div>
+                        </div>
                         <p class="text-lg text-white">{{ $c->description }}</p>
                         <p class="text-lg text-white">Category: {{ $c->category }}</p>
                         <p class="text-lg text-white">Size: {{ $c->size }}</p>
                         <p class="text-lg text-white">Brand: {{ $c->brand }}</p>
                         <p class="text-lg text-white">Wear count: {{ $c->wear_count }}</p>
                         <p class="text-lg text-white">Uses left: {{ $c->uses_left }}</p>
+
                         <div class="flex flex-row justify-between">
                             <button id="delete_clothing" data-id="{{ $c->id }}"
                                 class="pink-bg w-fit dark mt-5 text-white font-bold py-2 px-3 rounded mx-2">Delete</button>
@@ -27,8 +32,6 @@
                 @endforeach
                 <script>
                     document.querySelectorAll('#delete_clothing').forEach(item => {
-                        console.log(document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content'))
                         item.addEventListener('click', event => {
                             fetch(`/wardrobe/${item.getAttribute('data-id')}`, {
                                 method: 'DELETE',
