@@ -118,6 +118,13 @@ class ScheduleController extends Controller
 
         $user_id = auth()->id();
 
+        $washSchedule = WashSchedule::where('date', $date)->where('user_id', $user_id)->get();
+        if($washSchedule->count() > 0){
+            $washSchedule->each(function($schedule){
+                $schedule->delete();
+            });
+        }        
+
         $date = date('Y-m-d', strtotime($date));
         // validate each clothing in from the request
         foreach ($validated['clothes'] as $clothing_id) {
