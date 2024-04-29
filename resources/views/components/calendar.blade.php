@@ -44,7 +44,7 @@
             flex: 1;
         }
 
-        .cell:hover{
+        .cell:hover {
             color: white !important;
         }
 
@@ -238,8 +238,16 @@
             generateCalendar(today);
         }
 
+        // little hack for event bubbling
         function handleCellClick(event) {
-            window.location.href = `/schedule/${event.target.getAttribute('data-date')}`;
+            let target = event.target;
+            while (target !== null && !target.getAttribute('data-date')) {
+                target = target.parentElement;
+            }
+
+            if (target !== null) {
+                window.location.href = `/schedule/${target.getAttribute('data-date')}`;
+            }
         }
 
         generateCalendar(moment());
