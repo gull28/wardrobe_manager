@@ -110,9 +110,8 @@ class ScheduleController extends Controller
         // validate each clothing in from the request
         foreach ($validated['clothes'] as $clothing_id) {
             $canWash = WashSchedule::canAddToWashSchedule($clothing_id, $date);
-            return var_dump($canWash);
+            
             if ($canWash) {
-
                 WashSchedule::create([
                     'date' => $date,
                     'user_id' => $user_id,

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wash_schedule', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('clothing_id')->constrained('outfit');
+            $table->foreignId('clothing_id');
             $table->dateTime('date');
             $table->foreignId('user_id')->constrained();
         });

@@ -59,8 +59,20 @@
     </style>
 
     <script>
+        function htmlDecode(input) {
+            var doc = new DOMParser().parseFromString(input, "text/html");
+            return doc.documentElement.textContent;
+        }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const formattedMonth = String(month).padStart(2, '0');
+            const formattedDay = String(day).padStart(2, '0');
+            return `${year}-${formattedMonth}-${formattedDay}`;
+        }
+
         let today = moment();
-        console.log(@json($val))
+        let schedule = JSON.parse(htmlDecode(@json($schedule)));
 
         function generateCalendar() {
             var month = today.month();
@@ -89,8 +101,12 @@
                 if (i >= startingDayOfWeek) {
                     cell.textContent = dayCounter;
 
-                    // if the day is today, highlight it
-                    if (dayCounter === day) {
+                    const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
+                    const daySchedule = schedule.find(s => {
+                        return s.date === date;
+                    });
+
+                    if (daySchedule) {
                         cell.style.backgroundColor = '#f29492';
                         cell.style.color = 'white';
                     }
@@ -112,7 +128,15 @@
                         cell.textContent = dayCounter;
                         // add event listener to cell
                         // if the day is today, highlight it
-                        if (dayCounter === day) {
+                        const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
+
+                        // find if there is are wash/wear schedules for this day
+                        const daySchedule = schedule.find(s => {
+                            return s.date === date;
+                        });
+                        
+                        console.log(daySchedule);
+                        if (daySchedule) {
                             cell.style.backgroundColor = '#f29492';
                             cell.style.color = 'white';
                         }

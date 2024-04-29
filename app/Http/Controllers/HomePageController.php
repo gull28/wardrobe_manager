@@ -25,15 +25,19 @@ class HomePageController extends Controller
 
         $schedule = collect();
         foreach ($wearSchedule as $ws) {
-            $schedule->push(['date' => $ws['date'], 'type' => 'wear']);
+            $date = date('Y-m-d', strtotime($ws['date']));
+            $schedule->push(['date' => $date, 'type' => 'wear']);
         }
 
         foreach ($washSchedule as $ws) {
-            $schedule->push(['date' => $ws['date'], 'type' => 'wash']);
+            $date = date('Y-m-d', strtotime($ws['date']));
+            $schedule->push(['date' => $date, 'type' => 'wash']);
         }
 
         $schedule = collect($schedule)->sortBy('date');
 
-        return view('welcome');
+        return view('welcome', [
+            'schedule' => $schedule,
+        ]);
     }
 }
