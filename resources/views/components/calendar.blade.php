@@ -17,15 +17,16 @@
 
     <style>
         #calendar td {
-            padding: 1rem;
             min-width: 4rem;
             min-height: 4rem;
             border: 1px solid black;
+            display: flex;
+            flex: 1;
         }
 
         #calendar td[data-date]:hover {
             background-color: #f29492;
-            color: white;
+            color: white !important;
             cursor: pointer;
         }
 
@@ -43,6 +44,10 @@
             flex: 1;
         }
 
+        .cell:hover{
+            color: white !important;
+        }
+
         td {
             color: #f29492;
             display: flex;
@@ -50,6 +55,7 @@
             align-items: center;
             background-color: #114357;
             border-radius: 5px;
+            height: 5rem;
         }
 
         table {
@@ -63,6 +69,29 @@
             var doc = new DOMParser().parseFromString(input, "text/html");
             return doc.documentElement.textContent;
         }
+
+        function renderCell(cell, innerHTML, dayCounter) {
+            cell.innerHTML = `
+                <div class="cell flex flex-grow flex-col m-3">
+                    <div class="flex flex-grow flex-left">
+                        ${dayCounter}
+                    </div>
+                    ${innerHTML}
+                    </div>
+                `;
+
+            return cell;
+        }
+
+        // try not to cringe
+
+        @php
+            $wearIcon = @svg('maki-clothing-store');
+            $washIcon = @svg('iconpark-washingmachine');
+        @endphp
+
+        const wearIcon = `{{ $wearIcon }}`;
+        const washIcon = `{{ $washIcon }}`;
 
         function formatDate(dateString) {
             const [year, month, day] = dateString.split('-');
@@ -102,15 +131,40 @@
                     cell.textContent = dayCounter;
 
                     const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
-                    const daySchedule = schedule.find(s => {
+                    const daySchedule = schedule.filter(s => {
                         return s.date === date;
                     });
 
-                    if (daySchedule) {
-                        cell.style.backgroundColor = '#f29492';
-                        cell.style.color = 'white';
+                    let innerHTML = `<div class="flex flex-grow justify-evenly items-center">
+                                    <div class="flex w-max text-sm cell">No event</div>
+                                </div>
+                                `;
+                    cell = renderCell(cell, innerHTML, dayCounter);
+
+                    if (daySchedule.length) {
+                        if (daySchedule.some(s => s.type === 'wear') && daySchedule.some(s => s.type === 'wash')) {
+                            cell = renderCell(cell, `
+                                    <div class=" flex flex-grow justify-evenly items-center">
+                                        <div class="flex w-10 cell">${wearIcon}</div>
+                                        <div class="flex w-10 cell">${washIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                        } else if (daySchedule.some(s => s.type === 'wear')) {
+                            cell = renderCell(cell, `
+                                    <div class=" flex flex-grow justify-evenly items-center">
+                                        <div class="flex w-10 cell">${wearIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                        } else if (daySchedule.some(s => s.type === 'wash')) {
+                            cell = renderCell(cell, `
+                                    <div class=" flex flex-grow justify-evenly items-center">
+                                        <div class="flex w-10 cell">${washIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                        }
+
                     }
-                    // add event listener to cell
+
                     cell.addEventListener('click', handleCellClick);
                     cell.setAttribute('data-date', `${year}-${month + 1}-${dayCounter}`);
                     dayCounter++;
@@ -125,20 +179,40 @@
                 for (var j = 0; j < 7; j++) {
                     var cell = newRow.insertCell();
                     if (dayCounter <= daysInMonth) {
-                        cell.textContent = dayCounter;
-                        // add event listener to cell
-                        // if the day is today, highlight it
                         const date = formatDate(`${year}-${month + 1}-${dayCounter}`);
 
-                        // find if there is are wash/wear schedules for this day
-                        const daySchedule = schedule.find(s => {
+                        const daySchedule = schedule.filter(s => {
                             return s.date === date;
                         });
-                        
-                        console.log(daySchedule);
-                        if (daySchedule) {
-                            cell.style.backgroundColor = '#f29492';
-                            cell.style.color = 'white';
+
+                        let innerHTML = `<div class=" flex flex-grow justify-evenly items-center">
+                                    <div class="flex w-max text-sm cell">No event</div>
+                                </div>
+                                `;
+                        cell = renderCell(cell, innerHTML, dayCounter);
+
+                        if (daySchedule.length) {
+                            if (daySchedule.some(s => s.type === 'wear') && daySchedule.some(s => s.type === 'wash')) {
+                                cell = renderCell(cell, `
+                                    <div class="flex flex-grow justify-evenly items-center">
+                                        <div class=" flex w-10 cell">${wearIcon}</div>
+                                        <div class="flex w-10 cell">${washIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                            } else if (daySchedule.some(s => s.type === 'wear')) {
+                                cell = renderCell(cell, `
+                                    <div class="flex flex-grow justify-evenly items-center">
+                                        <div class="flex w-10 cell">${wearIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                            } else if (daySchedule.some(s => s.type === 'wash')) {
+                                cell = renderCell(cell, `
+                                    <div class="flex flex-grow justify-evenly items-center">
+                                        <div class="flex w-10 cell">${washIcon}</div>
+                                    </div>
+                                    `, dayCounter);
+                            }
+
                         }
 
                         cell.addEventListener('click', handleCellClick);
@@ -165,7 +239,6 @@
         }
 
         function handleCellClick(event) {
-            // go to /schedule/{day}
             window.location.href = `/schedule/${event.target.getAttribute('data-date')}`;
         }
 
