@@ -10,6 +10,15 @@ use App\Models\Clothing;
 
 class ScheduleController extends Controller
 {
+
+    public $clothingTypes = [
+        'shirt' => 'Shirt',
+        'pants' => 'Pants',
+        'shoes' => 'Shoes',
+        'accessory' => 'Accessory',
+        'other' => 'Other',
+    ];
+
     public function showDay($date)
     {
         
@@ -24,7 +33,8 @@ class ScheduleController extends Controller
             'wearables' => $wearables,
             'wearSchedule' => $wearSchedule,
             'washSchedule' => $washSchedule,
-            'isEditable' => $isEditable
+            'isEditable' => $isEditable,
+            'clothingTypes' => $this->clothingTypes,
         ]);
     }
 
