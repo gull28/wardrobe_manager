@@ -21,7 +21,7 @@
                     <div class="flex p-5 flex-col">
                         <div class="flex flex-row">
                             <x-form-input label="Color" name="color" type="color" placeholder="Blue"
-                                class="p-0 m-0 rounded-full w-16 h-16 border-none bg-transparent" id='color' />
+                                class="p-0 m-0 rounded-full !w-16 h-16 border-none bg-transparent" id='color' />
                         </div>
                         <x-form-dropdown label="Size" name="size" type="text" placeholder="M" class="pink-b">
                             @foreach ($sizes as $size)
