@@ -32,6 +32,9 @@ class WearSchedule extends Model
 
         $canWear = true;
 
+        $date = date('Y-m-d', strtotime($date));
+        $day = date('d', strtotime($date));
+
         // what this does is simulate the wear and was schedule for the outfit with simulated dates
         // if the outfit has negative wear count at any point in time, it can't be added to the wear schedule
         foreach ($clothing as $c) {
@@ -39,11 +42,13 @@ class WearSchedule extends Model
             $wearCount = $c['wear_count'];
             $washSchedule = WashSchedule::where('clothing_id', $clothingId)->where('date', '>', now())->orderBy('date', 'asc')->get();
 
-            if ($washSchedule->contains('date', $date)) {
-                return false;
+            $containsDate = $washSchedule->contains(function ($value, $key) use ($day) {
+                return date('d', strtotime($value['date'])) == $day;
+            });
+            
+            if ($containsDate) {
+                $canWear = false;
             }
-
-            $date = date('Y-m-d', strtotime($date));
 
             $schedule = collect();
             foreach ($wearSchedule as $ws) {
@@ -63,13 +68,15 @@ class WearSchedule extends Model
                     $wearCount = $c['wear_count'];
                 }
                 if ($wearCount < 0) {
-                    return false;
+                    $canWear= false;
                 }
             }
             if ($wearCount < 0) {
-                return false;
+                $canWear = false;
             }
         }
+
+
         return $canWear;
     }
     // public function canAddToWearSchedule($outfitId){

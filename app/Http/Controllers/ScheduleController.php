@@ -122,8 +122,10 @@ class ScheduleController extends Controller
     public function storeWash($date)
     {
 
+        $date = date('Y-m-d', strtotime($date));
+
         $validated = request()->validate([
-            'clothes' => 'required',
+            'clothes' => 'sometimes|array',
         ]);
 
         $user_id = auth()->id();
@@ -135,17 +137,17 @@ class ScheduleController extends Controller
             });
         }        
 
-        $date = date('Y-m-d', strtotime($date));
         // validate each clothing in from the request
-        foreach ($validated['clothes'] as $clothing_id) {
-            $canWash = WashSchedule::canAddToWashSchedule($clothing_id, $date);
-
-            if ($canWash) {
-                WashSchedule::create([
-                    'date' => $date,
-                    'user_id' => $user_id,
-                    'clothing_id' => $clothing_id,
-                ]);
+        if( !empty($validated['clothes']) ){
+            foreach ($validated['clothes'] as $clothingId) {
+                $canAdd = WashSchedule::canAddToWashSchedule((int)$clothingId, $date);
+                if($canAdd){
+                    WashSchedule::create([
+                        'date' => $date,
+                        'user_id' => $user_id,
+                        'clothing_id' => $clothingId,
+                    ]);
+                }
             }
         }
 
