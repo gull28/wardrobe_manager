@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\WearSchedule;
 use App\Models\Outfit;
+use App\Models\Clothing;
 
 class WashSchedule extends Model
 {
@@ -14,6 +15,10 @@ class WashSchedule extends Model
     use HasFactory;
 
     protected $fillable = ['date', 'user_id', 'clothing_id'];
+
+    public function clothing(){
+        return $this->belongsTo(Clothing::class);
+    }
 
     public static function canAddToWashSchedule($clothingId, $date)
     {

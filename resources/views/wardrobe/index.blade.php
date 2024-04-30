@@ -7,6 +7,11 @@
                 <p class="text-lg text-white w-96 text-wrap">Add some clothes to your wardrobe, so you can plan your outfits better.</p>
                 <a href="/wardrobe/create" class=" py-2 px-4 pink-bg dark font-bold w-fit border-2 border-gray-500 mt-5 rounded">Add clothes</a>
             </x-card> --}}
+            <div class="flex flex-col">
+                <a href="/wardrobe/create"
+                    class="py-2 px-4 dark-bg pink font-bold w-fit border-2 border-gray-500 mt-5 rounded">Add clothes</a>
+            </div>
+
         @else
             <div class="grid grid-cols-3 gap-4">
                 @foreach ($clothes as $c)
